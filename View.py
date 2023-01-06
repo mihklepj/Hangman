@@ -86,9 +86,9 @@ class View(Tk):
     def create_all_labels(self):
         Label(self.frame_top, text='Input Letter', font=self.default_style_bold).grid(row=1, column=0,
                                                                                       padx=5, pady=2)
-        lbl_error = Label(self.frame_top, text='Wrong 0 letter(s)', anchor='w',
+        lbl_error = Label(self.frame_top, text='Wrong letters: 0', anchor='w',
                           font=self.default_style_bold)
-        lbl_time = Label(self.frame_top, text='0:00:00', font=self.default_style)
+        lbl_time = Label(self.frame_top, text='TIME: ' + '0:00:00', font=self.default_style)
         lbl_result = Label(self.frame_bottom, text='Let\'s play'.upper(), font=self.big_font_style)
         # image label
         self.label_image = Label(self.frame_image, image=self.image)
