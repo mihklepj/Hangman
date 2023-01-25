@@ -1,13 +1,16 @@
-from tkinter import simpledialog
+from tkinter import simpledialog, messagebox
 from GameTime import GameTime
 from Model import Model
-from View import View, generate_leaderboard
+from View import View
+from os import path
 
 
 class Controller:
 
-    def __init__(self):
+    def __init__(self, db_name=None):
         self.model = Model()
+        if db_name is not None:
+            self.model.database_name = db_name  # database file changed
         self.view = View(self, self.model)
         self.gametime = GameTime(self.view.lbl_time)  # Create gametime object
 
@@ -26,6 +29,7 @@ class Controller:
         self.view.char_input.focus()  # Cursor in input
         self.gametime.reset()
         self.gametime.start()
+        self.view.create_all_buttons()
 
     def click_btn_cancel(self):
         self.gametime.stop()
@@ -35,6 +39,7 @@ class Controller:
         self.view.char_input['state'] = 'normal'
         self.view.char_input.delete(0, 'end')
         self.view.change_image(len(self.model.image_files) - 1)
+        self.view.create_all_buttons()
 
     def click_button_send(self):
         self.model.get_user_input(self.view.userinput.get().strip())
@@ -57,9 +62,13 @@ class Controller:
             player_name = simpledialog.askstring('GAME OVER', 'What\'s your name?', parent=self.view)
             self.model.set_player_name(player_name, self.gametime.counter)
             self.view.change_image(len(self.model.image_files) - 1)
+            self.view.create_all_buttons()
 
     def click_btn_leaderboard(self):
-        popup_window = self.view.create_popup_window()
-        data = self.model.read_leaderboard_file_contents()
-        generate_leaderboard(popup_window, data)
-        self.view.create_all_buttons()
+        if path.exists(self.model.leaderboard_file) and path.isfile(self.model.leaderboard_file):
+            popup_window = self.view.create_popup_window()
+            data = self.model.read_leaderboard_file_contents()
+            self.view.generate_leaderboard(popup_window, data)
+            self.view.create_all_buttons()
+        else:
+            messagebox.showwarning('Message', 'No leaderboard yet. Play the game first!')

@@ -7,45 +7,6 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 
 
-def generate_leaderboard(frame, data):
-    # Table view
-    my_table = ttk.Treeview(frame)
-
-    # Vertical scrollbar (right)
-    vsb = ttk.Scrollbar(frame, orient='vertical', command=my_table.yview)
-    vsb.pack(side='right', fill='y')
-    my_table.configure(yscrollcommand=vsb.set)
-
-    # Column id
-    my_table['columns'] = ('date-time', 'name', 'word', 'misses', 'game_time')
-
-    # Columns characteristics
-    my_table.column('#0', width=0, stretch=NO)
-    my_table.column('date-time', anchor=CENTER, width=90)
-    my_table.column('name', anchor=CENTER, width=80)
-    my_table.column('word', anchor=CENTER, width=80)
-    my_table.column('misses', anchor=CENTER, width=80)
-    my_table.column('game_time', anchor=CENTER, width=40)
-
-    # Table column heading
-    my_table.heading('#0', text='', anchor=CENTER)
-    my_table.heading('date-time', text='Date', anchor=CENTER)
-    my_table.heading('name', text='Player', anchor=CENTER)
-    my_table.heading('word', text='Word', anchor=CENTER)
-    my_table.heading('misses', text='Wrong letters', anchor=CENTER)
-    my_table.heading('game_time', text='Time', anchor=CENTER)
-
-    # Add data into table
-    x = 0
-    for p in data:
-        dt = datetime.strptime(p.date, '%Y-%m-%d %H:%M:%S').strftime('%d.%m.%Y %T')
-        my_table.insert(parent='', index='end', iid=str(x), text='',
-                        values=(dt, p.name, p.word, p.misses, str(timedelta(seconds=p.time))))
-
-        x += 1
-
-    my_table.pack(expand=True, fill=BOTH)
-
 
 class View(Tk):
 
@@ -73,8 +34,10 @@ class View(Tk):
         # Create all Buttons
         self.btn_new, self.btn_cancel, self.btn_send = self.create_all_buttons()
         self.lbl_error, self.lbl_time, self.lbl_result = self.create_all_labels()
-
         self.char_input = self.create_input_entry()
+
+        # Enter
+        self.bind('<Return>', lambda event: self.controller.click_button_send())
 
     def main(self):
         self.mainloop()
@@ -169,3 +132,45 @@ class View(Tk):
         frame.pack(expand=True, fill=BOTH)
         self.center(top)  # Cener on screen top window
         return frame
+
+    @staticmethod
+    def generate_leaderboard(frame, data):
+        # Table view
+        my_table = ttk.Treeview(frame)
+
+        # Vertical scrollbar (right)
+        vsb = ttk.Scrollbar(frame, orient='vertical', command=my_table.yview)
+        vsb.pack(side='right', fill='y')
+        my_table.configure(yscrollcommand=vsb.set)
+
+        # Column id
+        my_table['columns'] = ('date-time', 'name', 'word', 'misses', 'game_time')
+
+        # Columns characteristics
+        my_table.column('#0', width=0, stretch=NO)
+        my_table.column('date-time', anchor=CENTER, width=90)
+        my_table.column('name', anchor=CENTER, width=80)
+        my_table.column('word', anchor=CENTER, width=80)
+        my_table.column('misses', anchor=CENTER, width=80)
+        my_table.column('game_time', anchor=CENTER, width=40)
+
+        # Table column heading
+        my_table.heading('#0', text='', anchor=CENTER)
+        my_table.heading('date-time', text='Date', anchor=CENTER)
+        my_table.heading('name', text='Player', anchor=CENTER)
+        my_table.heading('word', text='Word', anchor=CENTER)
+        my_table.heading('misses', text='Wrong letters', anchor=CENTER)
+        my_table.heading('game_time', text='Time', anchor=CENTER)
+
+        # Add data into table
+        x = 0
+        for p in data:
+            dt = datetime.strptime(p.date, '%Y-%m-%d %H:%M:%S').strftime('%d.%m.%Y %T')
+            my_table.insert(parent='', index='end', iid=str(x), text='',
+                            values=(dt, p.name, p.word, p.misses, str(timedelta(seconds=p.time))))
+
+            x += 1
+
+        my_table.pack(expand=True, fill=BOTH)
+
+

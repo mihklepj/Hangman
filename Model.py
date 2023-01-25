@@ -5,12 +5,12 @@ from datetime import datetime
 from Leaderboard import Leaderboard
 
 
-def chars_to_list(string):
+'''def chars_to_list(string):
     # String to List: TEST => ['T', 'e', 's', 't']
     chars = []
     chars[:0] = string
     return chars
-
+'''
 
 class Model:
 
@@ -31,13 +31,13 @@ class Model:
         # print(self.new_word)  # TEST
         self.user_word = []
         self.all_user_chars = []
-        self.counter = 0  # todo needed or not?
+        self.counter = 0
         # All letter replaced by '_'
         for x in range(len(self.new_word)):
             self.user_word.append('_')
 
-        print(self.new_word)  # TEST: Bussijuht
-        print(self.user_word)  # TEST: ['_', '_', '_', '_', '_', '_', '_', '_', '_']
+        # print(self.new_word)  # TEST: Bussijuht
+        # print(self.user_word)  # TEST: ['_', '_', '_', '_', '_', '_', '_', '_', '_']
 
     def get_random_word(self):
         connection = sqlite3.connect(self.database_name)  # Database connection
@@ -61,12 +61,19 @@ class Model:
 
     def change_user_input(self, user_char):
         # Replace all '_' with found letters
-        current_word = chars_to_list(self.new_word)
+        current_word = self.chars_to_list(self.new_word)
         x = 0
         for c in current_word:
             if user_char.lower() == c.lower():
                 self.user_word[x] = user_char.upper()
             x += 1
+
+    @staticmethod
+    def chars_to_list(string):
+        # String to List: Test => ['T', 'e', 's', 't']
+        chars = []
+        chars[:0] = string
+        return chars
 
     def get_all_user_chars(self):
         return ', '.join(self.all_user_chars)
@@ -94,4 +101,5 @@ class Model:
             parts = line.strip().split(';')
             empty_list.append(Leaderboard(parts[0], parts[1], parts[2], parts[3], int(parts[4])))
         self.score_data = sorted(empty_list, key=lambda x: x.time)
+
         return self.score_data
