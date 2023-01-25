@@ -48,14 +48,19 @@ class Model:
     def get_user_input(self, userinput):
         if userinput:
             user_char = userinput[:1]  # Only first letter
-            if user_char.lower() in self.new_word.lower():
+            # Right letter and not repeated
+            if user_char.lower() in self.new_word.lower() and user_char.upper() not in self.user_word:
                 self.change_user_input(user_char)  # Found letter
+            # Right letter but repeated
+            elif user_char.lower() in self.new_word.lower() and user_char.upper() in self.user_word:
+                self.counter += 1
             else:  # If letter not found
                 self.counter += 1
                 self.all_user_chars.append(user_char.upper())  # Wrong letters to list all_user_chars
+            self.all_user_chars = list(set(self.all_user_chars))  # Removes repeating wrong letters from list
 
     def change_user_input(self, user_char):
-        # Raplace all '_' with found letters
+        # Replace all '_' with found letters
         current_word = chars_to_list(self.new_word)
         x = 0
         for c in current_word:
@@ -83,10 +88,10 @@ class Model:
 
     def read_leaderboard_file_contents(self):
         self.score_data = []
-        empy_list = []
+        empty_list = []
         all_lines = open(self.leaderboard_file, 'r', encoding='utf-8').readlines()
         for line in all_lines:
             parts = line.strip().split(';')
-            empy_list.append(Leaderboard(parts[0], parts[1], parts[2], parts[3], int(parts[4])))
-        self.score_data = sorted(empy_list, key=lambda x: x.time)
+            empty_list.append(Leaderboard(parts[0], parts[1], parts[2], parts[3], int(parts[4])))
+        self.score_data = sorted(empty_list, key=lambda x: x.time)
         return self.score_data

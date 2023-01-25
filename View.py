@@ -114,7 +114,8 @@ class View(Tk):
     def create_all_buttons(self):
         #
         btn_new = Button(self.frame_top, text='New Game', font=self.default_style, command=self.controller.click_new)
-        Button(self.frame_top, text='Leaderboard', font=self.default_style, command=self.controller.click_btn_leaderboard).grid(row=0, column=1, padx=5, pady=2, sticky=EW)
+        Button(self.frame_top, text='Leaderboard', font=self.default_style,
+               command=self.controller.click_btn_leaderboard).grid(row=0, column=1, padx=5, pady=2, sticky=EW)
 
         # Cancel and Send buttons
         btn_cancel = Button(self.frame_top, text='Cancel', font=self.default_style, state='disabled',
