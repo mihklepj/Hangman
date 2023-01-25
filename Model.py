@@ -36,8 +36,8 @@ class Model:
         for x in range(len(self.new_word)):
             self.user_word.append('_')
 
-        print(self.new_word)  # TEST: Bussijuht
-        print(self.user_word)  # TEST: ['_', '_', '_', '_', '_', '_', '_', '_', '_']
+        # print(self.new_word)  # TEST: Bussijuht
+        # print(self.user_word)  # TEST: ['_', '_', '_', '_', '_', '_', '_', '_', '_']
 
     def get_random_word(self):
         connection = sqlite3.connect(self.database_name)  # Database connection
