@@ -2,10 +2,8 @@ from datetime import datetime, timedelta
 from tkinter import *
 import tkinter.font as tkfont
 from tkinter import ttk
-
 # import frame as frame
 from PIL import Image, ImageTk
-
 
 
 class View(Tk):
@@ -130,47 +128,48 @@ class View(Tk):
 
         frame = Frame(top)
         frame.pack(expand=True, fill=BOTH)
-        self.center(top)  # Cener on screen top window
+        self.center(top)  # Center on screen top window
         return frame
 
     @staticmethod
     def generate_leaderboard(frame, data):
-        # Table view
-        my_table = ttk.Treeview(frame)
+        if len(data) > 0:
+            # Table view
+            my_table = ttk.Treeview(frame)
 
-        # Vertical scrollbar (right)
-        vsb = ttk.Scrollbar(frame, orient='vertical', command=my_table.yview)
-        vsb.pack(side='right', fill='y')
-        my_table.configure(yscrollcommand=vsb.set)
+            # Vertical scrollbar (right)
+            vsb = ttk.Scrollbar(frame, orient='vertical', command=my_table.yview)
+            vsb.pack(side='right', fill='y')
+            my_table.configure(yscrollcommand=vsb.set)
 
-        # Column id
-        my_table['columns'] = ('date-time', 'name', 'word', 'misses', 'game_time')
+            # Column id
+            my_table['columns'] = ('date-time', 'name', 'word', 'misses', 'game_time')
 
-        # Columns characteristics
-        my_table.column('#0', width=0, stretch=NO)
-        my_table.column('date-time', anchor=CENTER, width=90)
-        my_table.column('name', anchor=CENTER, width=80)
-        my_table.column('word', anchor=CENTER, width=80)
-        my_table.column('misses', anchor=CENTER, width=80)
-        my_table.column('game_time', anchor=CENTER, width=40)
+            # Columns characteristics
+            my_table.column('#0', width=0, stretch=NO)
+            my_table.column('date-time', anchor=CENTER, width=90)
+            my_table.column('name', anchor=CENTER, width=80)
+            my_table.column('word', anchor=CENTER, width=80)
+            my_table.column('misses', anchor=CENTER, width=80)
+            my_table.column('game_time', anchor=CENTER, width=40)
 
-        # Table column heading
-        my_table.heading('#0', text='', anchor=CENTER)
-        my_table.heading('date-time', text='Date', anchor=CENTER)
-        my_table.heading('name', text='Player', anchor=CENTER)
-        my_table.heading('word', text='Word', anchor=CENTER)
-        my_table.heading('misses', text='Wrong letters', anchor=CENTER)
-        my_table.heading('game_time', text='Time', anchor=CENTER)
+            # Table column heading
+            my_table.heading('#0', text='', anchor=CENTER)
+            my_table.heading('date-time', text='Date', anchor=CENTER)
+            my_table.heading('name', text='Player', anchor=CENTER)
+            my_table.heading('word', text='Word', anchor=CENTER)
+            my_table.heading('misses', text='Wrong letters', anchor=CENTER)
+            my_table.heading('game_time', text='Time', anchor=CENTER)
 
-        # Add data into table
-        x = 0
-        for p in data:
-            dt = datetime.strptime(p.date, '%Y-%m-%d %H:%M:%S').strftime('%d.%m.%Y %T')
-            my_table.insert(parent='', index='end', iid=str(x), text='',
-                            values=(dt, p.name, p.word, p.misses, str(timedelta(seconds=p.time))))
+            # Add data into table
+            x = 0
+            for p in data:
+                dt = datetime.strptime(p.date, '%Y-%m-%d %H:%M:%S').strftime('%d.%m.%Y %T')
+                my_table.insert(parent='', index='end', iid=str(x), text='',
+                                values=(dt, p.name, p.word, p.misses, str(timedelta(seconds=p.time))))
 
-            x += 1
+                x += 1
 
-        my_table.pack(expand=True, fill=BOTH)
+            my_table.pack(expand=True, fill=BOTH)
 
 

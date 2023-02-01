@@ -81,7 +81,7 @@ class Model:
     def set_player_name(self, name, seconds):
         line = []
         now = datetime.now().strftime('%Y-%m-%d %T')  # Date & time
-        if name.strip():
+        if name is not None:
             self.player_name = name.strip()
 
         line.append(now)  # Time

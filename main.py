@@ -3,6 +3,7 @@ import os.path
 from Controller import Controller
 from sys import argv  # Käsurea lugemiseks
 
+
 class Hangman:
 
     def __init__(self):

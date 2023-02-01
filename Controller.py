@@ -19,6 +19,7 @@ class Controller:
 
     def click_new(self):
         self.view.btn_new['state'] = 'disabled'
+
         self.view.btn_cancel['state'] = 'normal'
         self.view.btn_send['state'] = 'normal'
         self.view.char_input['state'] = 'normal'
@@ -29,17 +30,15 @@ class Controller:
         self.view.char_input.focus()  # Cursor in input
         self.gametime.reset()
         self.gametime.start()
-        self.view.create_all_buttons()
 
     def click_btn_cancel(self):
         self.gametime.stop()
-        self.view.btn_new['state'] = 'disabled'
+        self.view.btn_new['state'] = 'normal'
         self.view.btn_cancel['state'] = 'normal'
-        self.view.btn_send['state'] = 'normal'
-        self.view.char_input['state'] = 'normal'
+        self.view.btn_send['state'] = 'disabled'
+        self.view.char_input['state'] = 'disabled'
         self.view.char_input.delete(0, 'end')
         self.view.change_image(len(self.model.image_files) - 1)
-        self.view.create_all_buttons()
 
     def click_button_send(self):
         self.model.get_user_input(self.view.userinput.get().strip())
@@ -55,20 +54,19 @@ class Controller:
         if self.model.counter >= 11 or '_' not in self.model.user_word \
                 or self.model.counter >= (len(self.model.image_files) - 1):
             self.gametime.stop()
-            self.view.btn_new['state'] = 'disabled'
-            self.view.btn_cancel['state'] = 'normal'
-            self.view.btn_send['state'] = 'normal'
-            self.view.char_input['state'] = 'normal'
+            self.view.btn_new['state'] = 'normal'
+            self.view.btn_cancel['state'] = 'disabled'
+            self.view.btn_send['state'] = 'disabled'
+            self.view.char_input['state'] = 'disabled'
             player_name = simpledialog.askstring('GAME OVER', 'What\'s your name?', parent=self.view)
             self.model.set_player_name(player_name, self.gametime.counter)
             self.view.change_image(len(self.model.image_files) - 1)
-            self.view.create_all_buttons()
 
     def click_btn_leaderboard(self):
         if path.exists(self.model.leaderboard_file) and path.isfile(self.model.leaderboard_file):
             popup_window = self.view.create_popup_window()
             data = self.model.read_leaderboard_file_contents()
             self.view.generate_leaderboard(popup_window, data)
-            self.view.create_all_buttons()
+            # self.view.create_all_buttons()
         else:
             messagebox.showwarning('Message', 'No leaderboard yet. Play the game first!')
